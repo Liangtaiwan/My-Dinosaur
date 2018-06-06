@@ -39,23 +39,40 @@ class App extends Component {
   componentDidMount() {
 
     
-    window.onkeypress = (e) =>{
-      console.log(e.keyCode);
-      if(e.keyCode === 38 || e.keyCode === 32){
-        if (this.state.deadtext != ""){
-          this.restart()
-          return
-        }
-        if (this.jumping === false){
-          this.jumpDelta = JUMP_DELTA;
-          this.jumpHeight = JUMP_DELTA;
-          this.jumping = true;
-        };
-      };
-    };
+    // window.onkeypress = (e) =>{
+    //   console.log(e.keyCode);
+    //   if(e.keyCode === 38 || e.keyCode === 32){
+    //     if (this.state.deadtext != ""){
+    //       this.restart()
+    //       return
+    //     }
+    //     if (this.jumping === false){
+    //       this.jumpDelta = JUMP_DELTA;
+    //       this.jumpHeight = JUMP_DELTA;
+    //       this.jumping = true;
+    //     };
+    //   };
+    // };
+
+    document.addEventListener("keydown",this.handleKeyDown)
     this.timerID = setInterval(() => this.tick(), 1000/this.state.fps);  
   }
 
+
+  handleKeyDown = (e) =>{
+    console.log(e.keyCode)
+    if(e.keyCode === 38 || e.keyCode === 32){
+      if (this.state.deadtext != ""){
+        this.restart()
+        return
+      }
+      if (this.jumping === false){
+         this.jumpDelta = JUMP_DELTA;
+         this.jumpHeight = JUMP_DELTA;
+         this.jumping = true;
+      };
+    };  
+  }
 
 
   restart = () =>{
@@ -139,7 +156,7 @@ class App extends Component {
     let highscoreText ="HI " + "0".repeat(5-highscore.toString().length) + highscore.toString() 
     return (
       <Stage width={this.width} height={window.innerHeight}>
-        <Layer>
+        <Layer onKeyPress={this.handleKeyPress}>
           <Text text="Welocome to my dinosaur game!!!" fontStyle="bold" />
           <Text text={scoreText} x={this.width-50} fill="#595959" fontSize="15" fontStyle="bold"/>
           <Text text={highscoreText} x={this.width-140} fill="#595959" fontSize="15" fontStyle="bold"/>
